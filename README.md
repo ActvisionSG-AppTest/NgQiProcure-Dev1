@@ -23,7 +23,8 @@ Create a database called "Ng_QiProcure_Dev". Restore the database from the back 
 
 6. Use Microsoft Visual Studio Professional 2019 and goto aspnet-core directory, select QiProcureDemo.All solution.
 
-7 Press "F5" to run the project (You may use any internet browser). A "Swagger" webpage will be launched. Login as "admin". Password is 123qwe .
+7. Press "F5" to run the project (You may use any internet browser). 
+A "Swagger" webpage will be launched. Login as "admin". Password is 123qwe .
 
 8. Launch a new tab and go to the following URL:
 http://localhost/4200
