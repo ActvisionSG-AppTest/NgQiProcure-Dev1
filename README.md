@@ -1,18 +1,37 @@
 # ASP.NET ZERO
 
 This repository is configured and used for AspNet Zero Team's development. 
-It is not suggested for our customers to use this repository directly. It is suggested to download a project from https://aspnetzero.com/Download.
+It has been modified for Procurement System project.
 
-____________
+# Angular and Node version
 
-## Most Recent Release
+This project is using angular CLI version 8.3.23. Node version 14.9.0. If you are using a higher version you may try run it and resolve the dependencies.
 
-|  #   |     Status     |  Release Date  |                         Change Logs                          |                          Milestone                           |
-| :--: | :------------: | :--------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| 8.8 | ✔️ **RELEASED** | 2020-05-21 | [Release Notes](https://docs.aspnetzero.com/en/common/latest/Change-Logs) | [Closed](https://github.com/aspnetzero/aspnet-zero-core/milestone/70?closed=1) |
+# Steps to run in development environment
+## Last Modified: 1 Sep 2020
 
-## Current Milestone
-|  #   |    Status     |  Due Date  |                          Milestone                           |
-| :--: | :-----------: | :--------: | :----------------------------------------------------------: |
-| 8.9  | 🚧 In Progress | 2020-06-04 | [Open](https://github.com/aspnetzero/aspnet-zero-core/milestone/71)<br>[Closed](https://github.com/aspnetzero/aspnet-zero-core/milestone/71?closed=1) |
+1. Download all files ( you may use git clone or download method)
+
+2. Use Visual Studio Code editor to open the Angular directory.
+
+3. Open up terminal and type Yarn install. Note on the dependency errors and resolve them individually.
+
+5. Type npm start
+
+6. Create a database in SQL Server. You may download the latest version of SQL Server express.
+Create a database called "Ng_QiProcure_Dev". Restore the database from the back up file in SQLDB folder (attached in the project).
+
+7. Use Microsoft Visual Studio Professional 2019 and goto aspnet-core directory, select QiProcureDemo.All solution.
+
+8 Press "F5" to run the project (You may use any internet browser). A "Swagger" webpage will be launched. Login as "admin". Password is 123qwe .
+
+9. Launch a new tab and go to the following URL:
+http://localhost/4200
+
+10. Login as "admin". Password is 123qwe .
+
+
+
+
+
 
