@@ -1,0 +1,95 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #approvalRequestForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="approvalRequest.id">{{l("EditApprovalRequest")}}</span>
+                        <span *ngIf="!approvalRequest.id">{{l("CreateNewApprovalRequest")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="SysRefTenantId">{{l("SysRef")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysRefTenantId" name="sysRefTenantId" [(ngModel)]="sysRefTenantId" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysRefModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysRefIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="approvalRequest.sysRefId" [(ngModel)]="approvalRequest.sysRefId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="SysStatusName">{{l("SysStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysStatusName" name="sysStatusName" [(ngModel)]="sysStatusName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="approvalRequest.sysStatusId" [(ngModel)]="approvalRequest.sysStatusId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="UserName">{{l("User")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UserName" name="userName" [(ngModel)]="userName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUserModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUserIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="approvalRequest.userId" [(ngModel)]="approvalRequest.userId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="ApprovalRequest_ReferenceId">{{l("ReferenceId")}}</label>
+									<input type="number" id="ApprovalRequest_ReferenceId" class="form-control" [(ngModel)]="approvalRequest.referenceId" name="ReferenceId"  min="0"  max="999999999"/>
+								</div>
+					
+								<div class="form-group">
+									<label for="ApprovalRequest_OrderNo">{{l("OrderNo")}}</label>
+									<input type="number" id="ApprovalRequest_OrderNo" class="form-control" [(ngModel)]="approvalRequest.orderNo" name="OrderNo"  min="0"  max="999"/>
+								</div>
+					
+								<div class="form-group">
+									<label for="ApprovalRequest_RankNo">{{l("RankNo")}}</label>
+									<input type="number" id="ApprovalRequest_RankNo" class="form-control" [(ngModel)]="approvalRequest.rankNo" name="RankNo"  />
+								</div>
+					
+								<div class="form-group">
+									<label for="ApprovalRequest_Amount">{{l("Amount")}}</label>
+									<input type="number" id="ApprovalRequest_Amount" class="form-control" [(ngModel)]="approvalRequest.amount" name="Amount"  min="0"  max="999999999"/>
+								</div>
+					
+								<div class="form-group">
+									<label for="ApprovalRequest_Remark">{{l("Remark")}}</label>
+									<input type="text" id="ApprovalRequest_Remark" class="form-control" [(ngModel)]="approvalRequest.remark" name="Remark"   minlength="0"  maxlength="500" />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!approvalRequestForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<approvalRequestSysRefLookupTableModal #approvalRequestSysRefLookupTableModal (modalSave)="getNewSysRefId()"></approvalRequestSysRefLookupTableModal>
+		 <approvalRequestSysStatusLookupTableModal #approvalRequestSysStatusLookupTableModal (modalSave)="getNewSysStatusId()"></approvalRequestSysStatusLookupTableModal>
+		 <approvalRequestUserLookupTableModal #approvalRequestUserLookupTableModal (modalSave)="getNewUserId()"></approvalRequestUserLookupTableModal>
+		 
+</div>

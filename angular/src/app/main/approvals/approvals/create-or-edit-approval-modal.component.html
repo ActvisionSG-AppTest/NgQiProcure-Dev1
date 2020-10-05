@@ -1,0 +1,122 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #approvalForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="approval.id">{{l("EditApproval")}}</span>
+                        <span *ngIf="!approval.id">{{l("CreateNewApproval")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="SysRefTenantId">{{l("SysRef")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysRefTenantId" name="sysRefTenantId" [(ngModel)]="sysRefTenantId" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysRefModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysRefIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="approval.sysRefId" [(ngModel)]="approval.sysRefId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="TeamName">{{l("Team")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="TeamName" name="teamName" [(ngModel)]="teamName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectTeamModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setTeamIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="approval.teamId" [(ngModel)]="approval.teamId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="ProjectName">{{l("Project")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ProjectName" name="projectName" [(ngModel)]="projectName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectProjectModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setProjectIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="approval.projectId" [(ngModel)]="approval.projectId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="AccountName">{{l("Account")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AccountName" name="accountName" [(ngModel)]="accountName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAccountModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAccountIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="approval.accountId" [(ngModel)]="approval.accountId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="UserName">{{l("User")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UserName" name="userName" [(ngModel)]="userName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUserModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUserIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="approval.userId" [(ngModel)]="approval.userId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="SysStatusName">{{l("SysStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysStatusName" name="sysStatusName" [(ngModel)]="sysStatusName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="approval.sysStatusId" [(ngModel)]="approval.sysStatusId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="Approval_RankNo">{{l("RankNo")}}</label>
+									<input type="number" id="Approval_RankNo" class="form-control" [(ngModel)]="approval.rankNo" name="RankNo"  min="0"  max="999"/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Approval_Amount">{{l("Amount")}}</label>
+									<input type="number" id="Approval_Amount" class="form-control" [(ngModel)]="approval.amount" name="Amount"  min="0"  max="999999999"/>
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!approvalForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<approvalSysRefLookupTableModal #approvalSysRefLookupTableModal (modalSave)="getNewSysRefId()"></approvalSysRefLookupTableModal>
+		 <approvalTeamLookupTableModal #approvalTeamLookupTableModal (modalSave)="getNewTeamId()"></approvalTeamLookupTableModal>
+		 <approvalProjectLookupTableModal #approvalProjectLookupTableModal (modalSave)="getNewProjectId()"></approvalProjectLookupTableModal>
+		 <approvalAccountLookupTableModal #approvalAccountLookupTableModal (modalSave)="getNewAccountId()"></approvalAccountLookupTableModal>
+		 <approvalUserLookupTableModal #approvalUserLookupTableModal (modalSave)="getNewUserId()"></approvalUserLookupTableModal>
+		 <approvalSysStatusLookupTableModal #approvalSysStatusLookupTableModal (modalSave)="getNewSysStatusId()"></approvalSysStatusLookupTableModal>
+		 
+</div>

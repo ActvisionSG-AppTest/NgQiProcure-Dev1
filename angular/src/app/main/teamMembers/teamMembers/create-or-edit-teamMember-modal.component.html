@@ -1,0 +1,94 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #teamMemberForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="teamMember.id">{{l("EditTeamMember")}}</span>
+                        <span *ngIf="!teamMember.id">{{l("CreateNewTeamMember")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="TeamName">{{l("Team")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="TeamName" name="teamName" [(ngModel)]="teamName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectTeamModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setTeamIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="teamMember.teamId" [(ngModel)]="teamMember.teamId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="UserName">{{l("User")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="UserName" name="userName" [(ngModel)]="userName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectUserModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setUserIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="teamMember.userId" [(ngModel)]="teamMember.userId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="SysRefTenantId">{{l("SysRef")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysRefTenantId" name="sysRefTenantId" [(ngModel)]="sysRefTenantId" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysRefModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysRefIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="teamMember.sysRefId" [(ngModel)]="teamMember.sysRefId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="SysStatusName">{{l("SysStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysStatusName" name="sysStatusName" [(ngModel)]="sysStatusName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="teamMember.sysStatusId" [(ngModel)]="teamMember.sysStatusId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="TeamMember_Remark">{{l("Remark")}}</label>
+									<input type="text" id="TeamMember_Remark" class="form-control" [(ngModel)]="teamMember.remark" name="Remark"   minlength="0"  maxlength="500" />
+								</div>
+					
+								<div class="form-group">
+									<label for="TeamMember_ReportingTeamMemberId">{{l("ReportingTeamMemberId")}}</label>
+									<input type="number" id="TeamMember_ReportingTeamMemberId" class="form-control" [(ngModel)]="teamMember.reportingTeamMemberId" name="ReportingTeamMemberId"  />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!teamMemberForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<teamMemberTeamLookupTableModal #teamMemberTeamLookupTableModal (modalSave)="getNewTeamId()"></teamMemberTeamLookupTableModal>
+		 <teamMemberUserLookupTableModal #teamMemberUserLookupTableModal (modalSave)="getNewUserId()"></teamMemberUserLookupTableModal>
+		 <teamMemberSysRefLookupTableModal #teamMemberSysRefLookupTableModal (modalSave)="getNewSysRefId()"></teamMemberSysRefLookupTableModal>
+		 <teamMemberSysStatusLookupTableModal #teamMemberSysStatusLookupTableModal (modalSave)="getNewSysStatusId()"></teamMemberSysStatusLookupTableModal>
+		 
+</div>

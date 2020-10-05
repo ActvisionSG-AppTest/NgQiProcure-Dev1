@@ -1,0 +1,53 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #sysStatusForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="sysStatus.id">{{l("EditSysStatus")}}</span>
+                        <span *ngIf="!sysStatus.id">{{l("CreateNewSysStatus")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">                
+					<div class="form-group m-form__group">
+                        <label for="SysRefTenantId">{{l("Status")}} {{l("SysRef")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysRefTenantId" name="sysRefTenantId" [(ngModel)]="sysRefTenantId" type="text" disabled>     
+                            <div class="input-group-append" *ngIf="!sysRefTenantId">
+                                <button class="btn btn-primary blue" (click)="openSelectSysRefModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend" *ngIf="!sysRefTenantId">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysRefIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="sysStatus.sysRefId" [(ngModel)]="sysStatus.sysRefId" type="text"  hidden>
+		                        <div class="form-group">
+									<label for="SysStatus_Code">{{l("Code")}}</label>
+									<input type="number" id="SysStatus_Code" class="form-control" [(ngModel)]="sysStatus.code" name="Code"  min="1"  max="9999"/>
+								</div>
+					
+								<div class="form-group">
+									<label for="SysStatus_Name">{{l("Name")}} *</label>
+									<input type="text" id="SysStatus_Name" class="form-control" [(ngModel)]="sysStatus.name" name="Name"   minlength="1"  maxlength="30"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="SysStatus_Description">{{l("Description")}}</label>
+									<input type="text" id="SysStatus_Description" class="form-control" [(ngModel)]="sysStatus.description" name="Description"   minlength="0"  maxlength="500" />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!sysStatusForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<sysStatusesSysRefLookupTableModal #sysStatusesSysRefLookupTableModal (modalSave)="getNewSysRefId()"></sysStatusesSysRefLookupTableModal>
+		 
+</div>

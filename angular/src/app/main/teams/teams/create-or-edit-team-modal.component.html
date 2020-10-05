@@ -1,0 +1,220 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #teamForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="team.id">{{l("EditTeam")}}</span>
+                        <span *ngIf="!team.id">{{l("CreateNewTeam")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-panel">
+                        <tabset class="member-tabset">
+                            <tab heading="Team Info" (selectTab)="onSelectTab($event)">
+                                <div class="form-group m-form__group">
+                                    <label for="ReferenceTypeName">{{l("Reference Type")}} *</label>
+                                    <div class="input-group">
+                                        <input class="form-control" id="ReferenceTypeName" name="referenceTypeName"
+                                            [(ngModel)]="referenceTypeName" type="text" disabled>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary blue"
+                                                (click)="openSelectReferenceTypeModal()" type="button"><i
+                                                    class="fa fa-search"></i> {{l("Pick")}}</button>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-danger btn-icon" type="button"
+                                                (click)="setReferenceTypeIdNull()"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input class="form-control" name="team.referenceTypeId"
+                                    [(ngModel)]="team.referenceTypeId" type="text" hidden required>
+                                <div class="form-group">
+                                    <label for="Team_Name">{{l("Name")}} *</label>
+                                    <input type="text" id="Team_Name" class="form-control" [(ngModel)]="team.name"
+                                        name="Name" minlength="1" maxlength="30" required />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Team_Description">{{l("Description")}}</label>
+                                    <input type="text" id="Team_Description" class="form-control"
+                                        [(ngModel)]="team.description" name="Description" minlength="0"
+                                        maxlength="500" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Team_Remark">{{l("Remark")}}</label>
+                                    <input type="text" id="Team_Remark" class="form-control" [(ngModel)]="team.remark"
+                                        name="Remark" minlength="0" maxlength="500" />
+                                </div>
+                                <div
+                                    *ngIf="team.id !=null && (!isTeamApprovalRequired || (isTeamApprovalRequired  && this.sysStatusName =='approved')) ">
+                                    <br />
+                                    <div class="m-checkbox-list">
+                                        <label for="Team_IsActive" class="kt-checkbox">
+                                            <input id="Team_IsActive" type="checkbox" name="IsActive"
+                                                [(ngModel)]="team.isActive">
+                                            {{l("IsActive")}}
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="team.id !=null && isTeamApprovalRequired ">
+                                    <label>{{l("Status")}}</label>
+                                    <div class="input-group">
+                                        <label class="form-control">{{sysStatusName}}</label>
+                                        <div class="input-group-append"
+                                            *ngIf="teamMembers.length>0 && isTeamApprovalRequired && this.sysStatusName.toLowerCase() =='new'">
+                                            <button class="btn btn-danger blue" (click)="submitforApproval(team)"
+                                                type="button"><i class="fa fa-paper-plane"></i>
+                                                {{l("Submit for Approval")}}</button>
+                                        </div>
+                                    </div>
+                                    <p></p>
+                                    <span *ngIf="teamMembers.length==0 && isTeamApprovalRequired"
+                                        style="font-style: italic;">{{l("ApproveTeam")}}{{l("TeamMember")}}</span>
+                                </div>
+                                <div
+                                    *ngIf="team.id !=null && team.sysStatusId > 3">
+                                    <approval-list [referenceId]="team.id" [module]="module" [userName]="userName" [isUserAdmin]= "isUserAdmin"></approval-list>
+                                </div>
+                            </tab>
+                            <tab heading="Members" (selectTab)="onSelectTab($event)">
+                                <div class="container" *ngIf="team.id != null">
+                                    <div class="card">
+                                        <div class="card-header text-center">
+                                            <h5 class="card-title">Team Members Assignment</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p-pickList [source]="users" [target]="teamMembers" sourceHeader="Available"
+                                                targetHeader="Selected" dragdrop="true" [responsive]="true"
+                                                [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}"
+                                                filterBy="userName" sourceFilterPlaceholder="Search by username"
+                                                targetFilterPlaceholder="Search by username">
+                                                <ng-template let-user pTemplate="item">
+                                                    <div class="ui-helper-clearfix">
+                                                        <img src="{{user.profilePicture}}"
+                                                            style="border-radius: 50%;display:inline-block;margin:2px 0 2px 2px;"
+                                                            width="48">
+                                                        <div
+                                                            style="font-size:14px;float:right;margin:15px 5px 0 0; text-align: right;">
+                                                            {{user.userName}} <br>{{user.name}}
+                                                            {{user.surname | uppercase}} </div>
+                                                    </div>
+                                                </ng-template>
+                                            </p-pickList>
+                                        </div>
+                                        <div class="card-footer" style="text-align: center;">
+                                            <button type="button" class="btn btn-success"
+                                                (click)="updateTeamMembers()">{{l("Update")}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </tab>
+                            <tab heading="Member Details" (selectTab)="onSelectTab($event)">
+                                <div class="row" *ngIf="team.id != null">
+                                    <div class="col" *ngFor="let member of teamMembers ">
+                                        <div class="card mt-3" style="width: 18rem;">
+                                            <div class="card-header">
+                                                <div class="ui-helper-clearfix">
+                                                    <img src="{{member.profilePicture}}"
+                                                        style="border-radius: 50%;display:inline-block;margin:2px 0 2px 2px;"
+                                                        width="48">
+                                                    <div
+                                                        style="font-size:14px;float:right;margin:15px 5px 0 0; text-align: right;">
+                                                        {{member.userName}} <br>{{member.name}}
+                                                        {{member.surname | uppercase}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <h6 class="card-text">Team Role: </h6>
+                                                    <p-dropdown [options]="teamRoles" [(ngModel)]="member.teamRole"
+                                                        [style]="{'width':'50%'}" showClear="true" editable="true"
+                                                        [ngModelOptions]="{standalone: true}"
+                                                        placeholder="Select a Team Role">
+                                                        <ng-template let-teamMember pTemplate="item">
+                                                            <div>
+                                                                <div> {{teamMember.label}} </div>
+                                                            </div>
+                                                        </ng-template>
+                                                    </p-dropdown>
+                                                </div>
+                                                <div class="form-group">
+                                                    <h6 class="card-text">Reporting to: </h6>
+                                                    <p-dropdown [options]="teamMembers" [(ngModel)]="member.reportingTo"
+                                                        [style]="{'width':'150px'}" showClear="true" editable="true"
+                                                        [ngModelOptions]="{standalone: true}"
+                                                        placeholder="Select a Team Member"
+                                                        (onChange)="onSelectedReportingTo(member,$event)">
+                                                        <ng-template let-user pTemplate="item">
+                                                            <div>
+                                                                <div (click)="displayOtherMembers(member.userId == user.userId && false)"
+                                                                    [ngStyle]="member.userId == user.userId? {'color': '#ccc', 'cursor': 'default'} : ''">
+                                                                    {{user.label}} </div>
+                                                            </div>
+                                                        </ng-template>
+                                                    </p-dropdown>
+                                                </div>
+
+                                                <div class="card-footer" style="text-align: center;">
+                                                    <button type="button" class="btn btn-success"
+                                                        (click)="updateMemberDetail(member)">{{l("Update")}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab heading="Team chart" (selectTab)="onSelectTab($event)">
+                                <div class="card" *ngIf="team.id != null">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Team Chart</h5>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="chart-card-text">
+                                            <p-organizationChart [value]="mainTeamChart" selectionMode="single"
+                                                [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)"
+                                                styleClass="company">
+                                                <ng-template let-node pTemplate="person">
+                                                    <div class="node-header ui-corner-top" style="width: 9rem;">
+                                                        {{node.label}}</div>
+                                                    <div class="node-content" style="width: 9rem;">
+                                                        <img src="{{node.data.avatar}}" width="45">
+                                                        <div>{{node.data.name}}</div>
+                                                        <div><i class="far fa-envelope"></i> {{node.emailAddress}}</div>
+                                                    </div>
+                                                </ng-template>
+                                            </p-organizationChart>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="this.activeTab != 'Members' && this.activeTab != 'Member Details'"
+                        [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button *ngIf="this.activeTab != 'Members' && this.activeTab != 'Member Details'" type="submit"
+                        class="btn btn-primary blue" [disabled]="!teamForm.form.valid" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <teamSysStatusLookupTableModal #teamSysStatusLookupTableModal (modalSave)="getNewSysStatusId()">
+    </teamSysStatusLookupTableModal>
+    <teamReferenceTypeLookupTableModal #teamReferenceTypeLookupTableModal (modalSave)="getNewReferenceTypeId()">
+    </teamReferenceTypeLookupTableModal>
+</div>

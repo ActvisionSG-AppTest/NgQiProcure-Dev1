@@ -1,0 +1,119 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #projectForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="project.id">{{l("EditProject")}}</span>
+                        <span *ngIf="!project.id">{{l("CreateNewProject")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="AccountName">{{l("Account")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="AccountName" name="accountName" [(ngModel)]="accountName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectAccountModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setAccountIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="project.accountId" [(ngModel)]="project.accountId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="TeamName">{{l("Team")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="TeamName" name="teamName" [(ngModel)]="teamName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectTeamModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setTeamIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="project.teamId" [(ngModel)]="project.teamId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="SysStatusName">{{l("SysStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysStatusName" name="sysStatusName" [(ngModel)]="sysStatusName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="project.sysStatusId" [(ngModel)]="project.sysStatusId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="Project_Name">{{l("Name")}} *</label>
+									<input type="text" id="Project_Name" class="form-control" [(ngModel)]="project.name" name="Name"   minlength="1"  maxlength="200"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Project_Description">{{l("Description")}}</label>
+									<input type="text" id="Project_Description" class="form-control" [(ngModel)]="project.description" name="Description"   minlength="0"  maxlength="1000" />
+								</div>
+					
+								<div class="form-group">
+									<label for="Project_StartDate">{{l("StartDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="startDate" id="Project_StartDate" name="Project_StartDate">
+								</div>
+					
+								<div class="form-group">
+									<label for="Project_EndDate">{{l("EndDate")}}</label>
+									 <input class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="endDate" id="Project_EndDate" name="Project_EndDate">
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="Project_IsApprove" class="kt-checkbox">
+										<input id="Project_IsApprove" type="checkbox" name="IsApprove" [(ngModel)]="project.isApprove"> 
+										{{l("IsApprove")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="Project_IsActive" class="kt-checkbox">
+										<input id="Project_IsActive" type="checkbox" name="IsActive" [(ngModel)]="project.isActive"> 
+										{{l("IsActive")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="Project_Publish" class="kt-checkbox">
+										<input id="Project_Publish" type="checkbox" name="Publish" [(ngModel)]="project.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="Project_Remark">{{l("Remark")}}</label>
+									<input type="text" id="Project_Remark" class="form-control" [(ngModel)]="project.remark" name="Remark"   minlength="0"  maxlength="1000" />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!projectForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<projectAccountLookupTableModal #projectAccountLookupTableModal (modalSave)="getNewAccountId()"></projectAccountLookupTableModal>
+		 <projectTeamLookupTableModal #projectTeamLookupTableModal (modalSave)="getNewTeamId()"></projectTeamLookupTableModal>
+		 <projectSysStatusLookupTableModal #projectSysStatusLookupTableModal (modalSave)="getNewSysStatusId()"></projectSysStatusLookupTableModal>
+		 
+</div>

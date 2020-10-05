@@ -1,0 +1,65 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #projectInstructionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="projectInstruction.id">{{l("EditProjectInstruction")}}</span>
+                        <span *ngIf="!projectInstruction.id">{{l("CreateNewProjectInstruction")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="ProjectName">{{l("Project")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ProjectName" name="projectName" [(ngModel)]="projectName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectProjectModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setProjectIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="projectInstruction.projectId" [(ngModel)]="projectInstruction.projectId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="ProjectInstruction_InstructionNo">{{l("InstructionNo")}}</label>
+									<input type="number" id="ProjectInstruction_InstructionNo" class="form-control" [(ngModel)]="projectInstruction.instructionNo" name="InstructionNo"  min="0"  max="9999"/>
+								</div>
+					
+								<div class="form-group">
+									<label for="ProjectInstruction_Instructions">{{l("Instructions")}}</label>
+									<input type="text" id="ProjectInstruction_Instructions" class="form-control" [(ngModel)]="projectInstruction.instructions" name="Instructions"   minlength="0"  maxlength="10000" />
+								</div>
+					
+								<div class="form-group">
+									<label for="ProjectInstruction_Remarks">{{l("Remarks")}}</label>
+									<input type="text" id="ProjectInstruction_Remarks" class="form-control" [(ngModel)]="projectInstruction.remarks" name="Remarks"   minlength="0"  maxlength="5000" />
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="ProjectInstruction_IsActive" class="kt-checkbox">
+										<input id="ProjectInstruction_IsActive" type="checkbox" name="IsActive" [(ngModel)]="projectInstruction.isActive"> 
+										{{l("IsActive")}}
+										<span></span>
+									</label>
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!projectInstructionForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<projectInstructionProjectLookupTableModal #projectInstructionProjectLookupTableModal (modalSave)="getNewProjectId()"></projectInstructionProjectLookupTableModal>
+		 
+</div>

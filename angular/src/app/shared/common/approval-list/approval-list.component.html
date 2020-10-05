@@ -1,0 +1,36 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Approval Users</h5>
+    </div>
+
+    <div class="card-body">
+        <div class="row" *ngIf="approvalMembers != null">
+            <div class="col" *ngFor="let member of approvalMembers ">
+                <div class="row">
+                    <div class="card mt-3" style="width: 18rem;">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-9">
+                                    {{member.approvalRequest.orderNo}}. {{member.fullName}}<br>{{member.emailAddress}}
+                                </div>
+                                <div class="col-sm-3">
+                                        <img src="{{member.profilePicture}}"
+                                            style="border-radius: 50%;display:inline-block;margin:2px 0 2px 2px;"
+                                            width="48">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6>Status: {{member.sysStatusName}}</h6>
+                        </div>
+                        <div *ngIf="this.member.canApprove == true ">
+                            <div class="card-footer" style="text-align: center;" *ngIf="member.sysStatusName.toLowerCase() =='pending approval'">
+                                <button type="button" class="btn btn-success" (click)="approveRequest(member)" >Approve</button>
+                                <button type="button" class="btn btn-danger" (click)="rejectRequest(member)" >Reject</button>
+                            </div>    
+                        </div  >
+                </div>              
+            </div>
+        </div>
+    </div>
+</div>

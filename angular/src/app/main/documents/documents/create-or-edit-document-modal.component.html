@@ -1,0 +1,85 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #documentForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="document.id">{{l("EditDocument")}}</span>
+                        <span *ngIf="!document.id">{{l("CreateNewDocument")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="SysRefTenantId">{{l("SysRef")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysRefTenantId" name="sysRefTenantId" [(ngModel)]="sysRefTenantId" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysRefModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysRefIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="document.sysRefId" [(ngModel)]="document.sysRefId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="ProductName">{{l("Product")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ProductName" name="productName" [(ngModel)]="productName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectProductModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setProductIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="document.productId" [(ngModel)]="document.productId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="ServiceName">{{l("Service")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ServiceName" name="serviceName" [(ngModel)]="serviceName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectServiceModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setServiceIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="document.serviceId" [(ngModel)]="document.serviceId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="Document_Url">{{l("Url")}}</label>
+									<input type="text" id="Document_Url" class="form-control" [(ngModel)]="document.url" name="Url"   minlength="0"  maxlength="100" />
+								</div>
+					
+								<div class="form-group">
+									<label for="Document_Name">{{l("Name")}} *</label>
+									<input type="text" id="Document_Name" class="form-control" [(ngModel)]="document.name" name="Name"   minlength="0"  maxlength="50"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Document_Description">{{l("Description")}}</label>
+									<input type="text" id="Document_Description" class="form-control" [(ngModel)]="document.description" name="Description"   minlength="0"  maxlength="500" />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!documentForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<documentSysRefLookupTableModal #documentSysRefLookupTableModal (modalSave)="getNewSysRefId()"></documentSysRefLookupTableModal>
+		 <documentProductLookupTableModal #documentProductLookupTableModal (modalSave)="getNewProductId()"></documentProductLookupTableModal>
+		 <documentServiceLookupTableModal #documentServiceLookupTableModal (modalSave)="getNewServiceId()"></documentServiceLookupTableModal>
+		 
+</div>

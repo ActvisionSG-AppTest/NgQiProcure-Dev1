@@ -1,0 +1,107 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #accountForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="account.id">{{l("EditAccount")}}</span>
+                        <span *ngIf="!account.id">{{l("CreateNewAccount")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="TeamName">{{l("Team")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="TeamName" name="teamName" [(ngModel)]="teamName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectTeamModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setTeamIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="account.teamId" [(ngModel)]="account.teamId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="SysStatusName">{{l("SysStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysStatusName" name="sysStatusName" [(ngModel)]="sysStatusName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="account.sysStatusId" [(ngModel)]="account.sysStatusId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="Account_Name">{{l("Name")}} *</label>
+									<input type="text" id="Account_Name" class="form-control" [(ngModel)]="account.name" name="Name"   minlength="0"  maxlength="200"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Account_Description">{{l("Description")}}</label>
+									<input type="text" id="Account_Description" class="form-control" [(ngModel)]="account.description" name="Description"   minlength="0"  maxlength="1000" />
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="Account_IsPersonal" class="kt-checkbox">
+										<input id="Account_IsPersonal" type="checkbox" name="IsPersonal" [(ngModel)]="account.isPersonal"> 
+										{{l("IsPersonal")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="Account_IsActive" class="kt-checkbox">
+										<input id="Account_IsActive" type="checkbox" name="IsActive" [(ngModel)]="account.isActive"> 
+										{{l("IsActive")}}
+										<span></span>
+									</label>
+								</div>
+					
+								<div class="form-group">
+									<label for="Account_Remark">{{l("Remark")}}</label>
+									<input type="text" id="Account_Remark" class="form-control" [(ngModel)]="account.remark" name="Remark"   minlength="0"  maxlength="1000" />
+								</div>
+					
+								<div class="form-group">
+									<label for="Account_Code">{{l("Code")}} *</label>
+									<input type="text" id="Account_Code" class="form-control" [(ngModel)]="account.code" name="Code"   minlength="1"  maxlength="30"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Account_Email">{{l("Email")}}</label>
+									<input type="text" id="Account_Email" class="form-control" [(ngModel)]="account.email" name="Email"   minlength="0"  maxlength="200" />
+								</div>
+					
+								<div class="form-group">
+									<label for="Account_UserName">{{l("UserName")}}</label>
+									<input type="text" id="Account_UserName" class="form-control" [(ngModel)]="account.userName" name="UserName"   minlength="0"  maxlength="200" />
+								</div>
+					
+								<div class="form-group">
+									<label for="Account_Password">{{l("Password")}}</label>
+									<input type="text" id="Account_Password" class="form-control" [(ngModel)]="account.password" name="Password"   minlength="0"  maxlength="100" />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!accountForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<accountTeamLookupTableModal #accountTeamLookupTableModal (modalSave)="getNewTeamId()"></accountTeamLookupTableModal>
+		 <accountSysStatusLookupTableModal #accountSysStatusLookupTableModal (modalSave)="getNewSysStatusId()"></accountSysStatusLookupTableModal>
+		 
+</div>

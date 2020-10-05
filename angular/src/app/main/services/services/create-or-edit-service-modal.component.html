@@ -1,0 +1,303 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #serviceForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="service.id">{{l("EditService")}}</span>
+                        <span *ngIf="!service.id">{{l("CreateNewService")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  <div class="tab-panel">
+						<tabset class="member-tabset">
+                          <tab heading="Service Info" (selectTab)="onSelectTab($event)">
+                                <div class="form-group m-form__group">
+                                    <label for="CategoryName">{{l("Category")}}</label>
+                                    <div class="input-group">
+                                        <input class="form-control" id="CategoryName" name="categoryName" [(ngModel)]="categoryName" type="text" disabled>     
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary blue" (click)="openSelectCategoryModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                        </div> <div class="input-group-prepend">
+                                            <button class="btn btn-danger btn-icon" type="button" (click)="setCategoryIdNull()"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input class="form-control" name="service.categoryId" [(ngModel)]="service.categoryId" type="text"  hidden>
+                                    
+                                <input class="form-control" name="service.sysRefId" [(ngModel)]="service.sysRefId" type="text"  hidden>
+                                
+                                <div class="form-group">
+                                    <label for="Service_Name">{{l("Name")}} *</label>
+                                    <input type="text" id="Service_Name" class="form-control" [(ngModel)]="service.name" name="Name"   minlength="1"  maxlength="50"  required/>
+                                </div>
+                    
+                                <div class="form-group">
+                                    <label for="Service_Description">{{l("Description")}}</label>
+                                    <input type="text" id="Service_Description" class="form-control" [(ngModel)]="service.description" name="Description"   minlength="0"  maxlength="500" />
+                                </div>
+                    
+                                <div class="form-group">
+                                    <label for="Service_Duration">{{l("Duration")}}</label>
+                                    <div class="input-group">
+                                        <input style="width: 70%;" type="number" id="Service_Duration" class="form-control" [(ngModel)]="service.duration" name="Duration"  min="0"  max="9"/>
+                                        <input style="width: 10%;" class="form-control" id="SysRefRefCode" name="sysRefRefCode" [(ngModel)]="sysRefRefCode" type="text" disabled>     
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary blue" (click)="openSelectSysRefModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                                        </div> 
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-danger btn-icon" type="button" (click)="setSysRefIdNull()"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                                <br/><div class="m-checkbox-list">
+                                    <label for="Service_IsApproved" class="kt-checkbox">
+                                        <input id="Service_IsApproved" type="checkbox" name="IsApproved" [(ngModel)]="service.isApproved"> 
+                                        {{l("IsApproved")}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                    
+                                <br/><div class="m-checkbox-list">
+                                    <label for="Service_IsActive" class="kt-checkbox">
+                                        <input id="Service_IsActive" type="checkbox" name="IsActive" [(ngModel)]="service.isActive"> 
+                                        {{l("IsActive")}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                    
+                                <div class="form-group">
+                                    <label for="Service_Remark">{{l("Remark")}}</label>
+                                    <input type="text" id="Service_Remark" class="form-control" [(ngModel)]="service.remark" name="Remark"   minlength="0"  maxlength="500" />
+                                </div>
+                    
+                                <br><div class="form-group row col-lg-12 col-md-10 col-sm-8">
+                                    <label for="MultiSelectInput" class="col-lg-11">Other Categories</label>
+                                    <div class="col-lg-12 col-md-10 col-sm-8">
+                                        <p-autoComplete [(ngModel)]="categories"
+                                                        [suggestions]="filteredCategories"
+                                                        (completeMethod)="filterCategories($event)"
+                                                        field="name"
+                                                        placeholder="Categories"
+                                                        [minLength]="1"
+                                                        name="MultiSelectInput"
+                                                        id="MultiSelectInput"
+                                                        [multiple]="true"
+                                                        inputStyleClass="form-control"
+                                                        styleClass="width-percent-100"
+                                                        dropdown=true
+                                                        >
+                                        </p-autoComplete>
+                                    </div>
+                                </div>
+                        </tab>
+                        <tab heading="Images" (selectTab)="onSelectTab($event)">                            
+                                <div class="row mt-3" *ngIf="service.id != null">
+                                    <div class="col-md-3">
+                                    <h3>Add Photos</h3>
+                                
+                                    <div ng2FileDrop [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }" (fileOver)="fileOverBase($event)"
+                                        [uploader]="uploader" class="card bg-faded p-3 text-center mb-3 my-drop-zone">
+                                        <i class="fa fa-upload fa-3x"></i>
+                                        Drop Photos Here
+                                    </div>   
+                                    <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br />
+                                    </div>
+                                
+                                    <div class="col-md-9" style="margin-bottom: 40px" *ngIf="uploader?.queue?.length">
+                                    <h3>Upload queue</h3>
+                                    <p>Queue length: {{ uploader?.queue?.length }}</p>
+                                
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th width="50%">Name</th>
+                                            <th>Size</th>
+                                            <th>Description</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let item of uploader.queue">
+                                            <td>
+                                            <strong>{{ item?.file?.name }}</strong>
+                                            </td>
+                                            <td *ngIf="uploader.options.isHTML5" nowrap>
+                                            {{ item?.file?.size / 1024 / 1024 | number: ".2" }} MB
+                                            </td>
+                                            <td>
+                                                <textarea class="form-control" placeholder="enter description" [(ngModel)]="item.formData" name="Description"
+                                                minlength="0"  maxlength="50"></textarea>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                
+                                    <div>
+                                        <div>
+                                        Queue progress:
+                                        <div class="progress" mb-4>
+                                            <div class="progress-bar" role="progressbar" [ngStyle]="{ width: uploader.progress + '%' }"></div>
+                                        </div>
+                                        </div>
+                                        <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
+                                        [disabled]="!uploader.getNotUploadedItems().length">
+                                        <span class="fa fa-upload"></span> Upload
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()"
+                                        [disabled]="!uploader.isUploading">
+                                        <span class="fa fa-ban"></span> Cancel
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()"
+                                        [disabled]="!uploader.queue.length">
+                                        <span class="fa fa-trash"></span> Remove
+                                        </button>
+                                    </div>
+                                    </div>
+                                </div>
+                                    
+                                    
+                                    
+                            <p></p>
+                            <div style="text-align: center;" *ngIf="this.activeTab == 'Images'">                                
+                                <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+                            </div>                            
+                        </tab>
+                        <tab heading="Documents" (selectTab)="onSelectTab($event)">
+
+                            <div class="row mt-3" *ngIf="service.id != null">
+                                    <div class="col-md-3">
+                                    <h3>Add Files</h3>
+                                
+                                    <div ng2FileDrop [ngClass]="{ 'nv-file-over': hasBaseDropZoneOverDocument }" (fileOver)="fileOverBaseDocument($event)"
+                                        [uploader]="uploaderDocument" class="card bg-faded p-3 text-center mb-3 my-drop-zone">
+                                        <i class="fa fa-upload fa-3x"></i>
+                                        Drop Files Here
+                                    </div>   
+                                    <!-- Multiple -->
+                                    <input type="file" ng2FileSelect [uploader]="uploaderDocument" multiple /><br />
+                                    </div>
+                                
+                                    <div class="col-md-9" style="margin-bottom: 40px" *ngIf="uploaderDocument?.queue?.length">
+                                    <h3>Upload queue</h3>
+                                    <p>Queue length: {{ uploaderDocument?.queue?.length }}</p>
+                                
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th width="50%">Name</th>
+                                            <th>Size</th>
+                                            <th>Description</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let doc of uploaderDocument.queue">
+                                            <td>
+                                            <strong>{{ doc?.file?.name }}</strong>
+                                            </td>
+                                            <td *ngIf="uploaderDocument.options.isHTML5" nowrap>
+                                            {{ doc?.file?.size / 1024 / 1024 | number: ".2" }} MB
+                                            </td>
+                                            <td>
+                                                <textarea class="form-control" placeholder="enter description" [(ngModel)]="doc.formData" name="Description"
+                                                minlength="0"  maxlength="50"></textarea>
+                                                <!-- <input type="text"  /> -->
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                
+                                    <div>
+                                        <div>
+                                        Queue progress:
+                                        <div class="progress" mb-4>
+                                            <div class="progress-bar" role="progressbar" [ngStyle]="{ width: uploaderDocument.progress + '%' }"></div>
+                                        </div>
+                                        </div>
+                                        <button type="button" class="btn btn-success btn-s" (click)="uploaderDocument.uploadAll()"
+                                        [disabled]="!uploaderDocument.getNotUploadedItems().length">
+                                        <span class="fa fa-upload"></span> Upload
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-s" (click)="uploaderDocument.cancelAll()"
+                                        [disabled]="!uploaderDocument.isUploading">
+                                        <span class="fa fa-ban"></span> Cancel
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-s" (click)="uploaderDocument.clearQueue()"
+                                        [disabled]="!uploaderDocument.queue.length">
+                                        <span class="fa fa-trash"></span> Remove
+                                        </button>
+                                    </div>
+                                    </div>
+                                </div>
+                                                                                                            
+                            <p></p>
+                            <div class="card" *ngIf="this.activeTab == 'Documents' && documents.length > 0" >       
+                                <div class="card-header text-center">
+                                    <div class="container mt-4"> 
+                                        <h5 class="card-title">Documents Gallery ( Total: {{documents.length}} )</h5></div>  
+                                        <div class="row">
+                                                <div class="col-sm-5 mb-3" style="text-align: center;">                                                      
+                                                        <div  *ngIf="documents.length > 0" [class.card-text]="documents.length > 0" >
+                                                        <div class="card-body text-center" *ngFor="let doc of documents">
+                                                            <div class="card text-center" style="width: 100%;" >       
+                                                                <div class="card-header bg-secondary text-center">
+                                                                    <h5>{{doc.name}}</h5>
+                                                                </div>       
+                                                                <div class="card-body text-center">
+                                                                    <div class="row text-center">
+                                                                        <div class="col sm-2">                                                                            
+                                                                        <button type="button" class="btn btn-sm btn-primary mr-1" style="width: 45%;" (click)="download(doc)" >Download</button>
+                                                                        <button type="button" class="btn btn-sm btn-danger mr-1"  style="width: 45%;" (click)="delete(doc)" >Delete</button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="thumbnail" [ngStyle]="{'width': '100%', 'height': doc.fileName.includes('pdf') ? '250px' : '45px' }"  (click)="displayPdf(doc)">
+                                                                        <a *ngIf="doc.fileName.includes('pdf')">
+                                                                            <p>Click on thumbnail to view PDF</p>
+                                                                            <pdf-viewer
+                                                                            [src]="doc.blob"
+                                                                            [page]="doc.page"
+                                                                            [original-size]="false"
+                                                                            style="display: block; height:200px"
+                                                                            ></pdf-viewer>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>    
+                                                   
+                                                </div>
+                                            </div>                                                          
+                                            <div class="col-sm-7" *ngIf="showPdf">  
+                                                <div  *ngIf="documents.length > 0" [class.card-text]="documents.length > 0" >                                                  
+                                                <ngx-extended-pdf-viewer [base64Src]="viewPdf" backgroundColor="#ffffff" [height]="'60vh'" [useBrowserLocale]="true"
+                                                [handTool]="false" [showHandToolButton]="true"
+                                                [showZoomButtons]="true" [showSecondaryToolbarButton]="true"> </ngx-extended-pdf-viewer>
+                                               
+                                            </div>
+                                            </div>
+                                        </div>  
+                                    </div>                                                      
+                            </div>
+                        </tab>
+                        <tab heading="Prices" (selectTab)="onSelectTab($event)">
+                            <service-prices-listing [service]="service" *ngIf="service.id != null"></service-prices-listing>
+                        </tab>
+                        </tabset>
+                  </div>                        
+					
+                </div>
+                <div class="modal-footer">
+                    <button *ngIf="this.activeTab != 'Images' && this.activeTab != 'Prices' && this.activeTab != 'Documents'" [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button *ngIf="this.activeTab != 'Images' && this.activeTab != 'Prices' && this.activeTab != 'Documents'" type="submit" class="btn btn-primary blue" [disabled]="!serviceForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<serviceCategoryLookupTableModal #serviceCategoryLookupTableModal (modalSave)="getNewCategoryId()"></serviceCategoryLookupTableModal>
+		 <serviceSysRefLookupTableModal #serviceSysRefLookupTableModal (modalSave)="getNewSysRefId()"></serviceSysRefLookupTableModal>
+		 
+</div>

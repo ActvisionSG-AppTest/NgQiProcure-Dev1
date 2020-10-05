@@ -1,0 +1,101 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #emailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="email.id">{{l("EditEmail")}}</span>
+                        <span *ngIf="!email.id">{{l("CreateNewEmail")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="SysRefTenantId">{{l("SysRef")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysRefTenantId" name="sysRefTenantId" [(ngModel)]="sysRefTenantId" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysRefModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysRefIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="email.sysRefId" [(ngModel)]="email.sysRefId" type="text"  hidden>
+		 
+					<div class="form-group m-form__group">
+                        <label for="SysStatusName">{{l("SysStatus")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="SysStatusName" name="sysStatusName" [(ngModel)]="sysStatusName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectSysStatusModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setSysStatusIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="email.sysStatusId" [(ngModel)]="email.sysStatusId" type="text"  hidden>
+		 
+
+								<div class="form-group">
+									<label for="Email_ReferenceId">{{l("ReferenceId")}}</label>
+									<input type="number" id="Email_ReferenceId" class="form-control" [(ngModel)]="email.referenceId" name="ReferenceId"  min="1"  max="999999999"/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Email_EmailFrom">{{l("EmailFrom")}} *</label>
+									<input type="text" id="Email_EmailFrom" class="form-control" [(ngModel)]="email.emailFrom" name="EmailFrom"   minlength="1"  maxlength="50"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Email_EmailTo">{{l("EmailTo")}} *</label>
+									<input type="text" id="Email_EmailTo" class="form-control" [(ngModel)]="email.emailTo" name="EmailTo"   minlength="1"  maxlength="5000"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Email_EmailCC">{{l("EmailCC")}}</label>
+									<input type="text" id="Email_EmailCC" class="form-control" [(ngModel)]="email.emailCC" name="EmailCC"   minlength="0"  maxlength="5000" />
+								</div>
+					
+								<div class="form-group">
+									<label for="Email_EmailBCC">{{l("EmailBCC")}}</label>
+									<input type="text" id="Email_EmailBCC" class="form-control" [(ngModel)]="email.emailBCC" name="EmailBCC"   minlength="0"  maxlength="5000" />
+								</div>
+					
+								<div class="form-group">
+									<label for="Email_Subject">{{l("Subject")}} *</label>
+									<input type="text" id="Email_Subject" class="form-control" [(ngModel)]="email.subject" name="Subject"   minlength="1"  maxlength="500"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Email_Body">{{l("Body")}} *</label>
+									<input type="text" id="Email_Body" class="form-control" [(ngModel)]="email.body" name="Body"   minlength="1"  maxlength="999999"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="Email_RequestDate">{{l("RequestDate")}}</label>
+									 <input required class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="email.requestDate" id="Email_RequestDate" name="Email_RequestDate">
+								</div>
+					
+								<div class="form-group">
+									<label for="Email_SentDate">{{l("SentDate")}}</label>
+									 <input required class="form-control m-input" type="datetime" bsDatepicker [(ngModel)]="email.sentDate" id="Email_SentDate" name="Email_SentDate">
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!emailForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<emailSysRefLookupTableModal #emailSysRefLookupTableModal (modalSave)="getNewSysRefId()"></emailSysRefLookupTableModal>
+		 <emailSysStatusLookupTableModal #emailSysStatusLookupTableModal (modalSave)="getNewSysStatusId()"></emailSysStatusLookupTableModal>
+		 
+</div>

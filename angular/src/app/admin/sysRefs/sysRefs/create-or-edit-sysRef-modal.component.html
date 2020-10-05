@@ -1,0 +1,56 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #sysRefForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="sysRef.id">{{l("EditSysRef")}}</span>
+                        <span *ngIf="!sysRef.id">{{l("CreateNewSysRef")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="ReferenceTypeName">{{l("Reference Type")}} *</label>
+                        <div class="input-group">
+                            <input class="form-control" id="ReferenceTypeName" name="referenceTypeName" [(ngModel)]="referenceTypeName" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectReferenceTypeModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setReferenceTypeIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="sysRef.referenceTypeId" [(ngModel)]="sysRef.referenceTypeId" type="text"  hidden required>
+         
+				    <div class="form-group">
+						<label for="SysRef_RefCode">{{l("Reference Code")}} *</label>
+						<input type="text" id="SysRef_RefCode" class="form-control" [(ngModel)]="sysRef.refCode" name="RefCode"   minlength="1"  maxlength="30"  required/>
+					</div>
+
+                    <div class="form-group">
+						<label for="SysRef_OrderNumber">{{l("OrderNumber")}}</label>
+						<input type="text" id="SysRef_OrderNumber" class="form-control" [(ngModel)]="sysRef.orderNumber" name="OrderNumber"   minlength="0"  maxlength="30"/>
+					</div>
+
+                    <div class="form-group">
+						<label for="SysRef_Description">{{l("Description")}}</label>
+						<input type="text" id="SysRef_Description" class="form-control" [(ngModel)]="sysRef.description" name="description"   minlength="0"  maxlength="100"/>
+					</div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!sysRefForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<sysRefReferenceTypeLookupTableModal #sysRefReferenceTypeLookupTableModal (modalSave)="getNewReferenceTypeId()"></sysRefReferenceTypeLookupTableModal>
+		 
+</div>

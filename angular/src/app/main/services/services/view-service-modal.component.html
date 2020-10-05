@@ -1,0 +1,120 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-panel">
+                    <tabset class="member-tabset">
+                        <tab heading="Product Info" (selectTab)="onSelectTab($event)">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <h6>{{l("Name")}} :</h6>
+                                    {{ item.service.name }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{l("Description")}} :</h6>
+                                    {{ item.service.description }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{l("Category")}} {{l("Name")}} :</h6>
+                                    {{item.categoryName}}
+                                </div>
+
+                                <div class="col-6 mb-3">
+                                    <h6>{{l("IsApproved")}} :</h6>
+                                    {{ item.service.isApproved }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{l("IsActive")}} :</h6>
+                                    {{ item.service.isActive }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{l("Remark")}} :</h6>
+                                    {{ item.service.remark }}
+                                </div>
+
+                                <div class="col-6 mb-3">
+                                    <h6>{{l("Duration")}} :</h6>
+                                    {{ item.service.duration }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{l("Uom")}} :</h6>
+                                    {{item.sysRefRefCode}}
+                                </div>
+
+                            </div>
+                        </tab>
+                        <tab heading="Images" (selectTab)="onSelectTab($event)">
+                            <div style="text-align: center;" *ngIf="this.activeTab == 'Images'">                                
+                                <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+                            </div>
+                        </tab>
+                        <tab heading="Documents" (selectTab)="onSelectTab($event)">                                                                                                                                        
+                            <div class="card" *ngIf="this.activeTab == 'Documents' && documents.length > 0" >       
+                                <div class="card-header text-center">
+                                    <h5 class="card-title">Documents Gallery ( Total: {{documents.length}} )</h5></div>  
+                                    <div class="container mt-4"> 
+                                        <div class="row">
+                                            <div class="col-sm-5 mb-3" style="text-align: center;">                                                      
+                                                    <div  *ngIf="documents.length > 0" [class.card-text]="documents.length > 0" >
+                                                    <div class="card-body text-center" *ngFor="let doc of documents">
+                                                        <div class="card text-center" style="width: 100%;" >       
+                                                            <div class="card-header bg-secondary text-center">
+                                                                <h5>{{doc.name}}</h5>
+                                                            </div>       
+                                                            <div class="card-body text-center">
+                                                                <div class="row text-center">
+                                                                    <div class="col sm-2">                                                                            
+                                                                    <button type="button" class="btn btn-sm btn-primary mr-1" style="width: 45%;" (click)="download(doc)" >Download</button>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="thumbnail" [ngStyle]="{'width': '100%', 'height': doc.fileName.includes('pdf') ? '250px' : '45px' }"  (click)="displayPdf(doc)">
+                                                                    <a *ngIf="doc.fileName.includes('pdf')">
+                                                                        <p>Click on thumbnail to view PDF</p>
+                                                                        <pdf-viewer
+                                                                        [src]="doc.blob"
+                                                                        [page]="doc.page"
+                                                                        [original-size]="false"
+                                                                        style="display: block; height:200px"
+                                                                        ></pdf-viewer>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>    
+                                               
+                                            </div>
+                                        </div>                                                          
+                                        <div class="col-sm-7" *ngIf="showPdf">  
+                                            <div  *ngIf="documents.length > 0" [class.card-text]="documents.length > 0" >                                                  
+                                            <ngx-extended-pdf-viewer [base64Src]="viewPdf" backgroundColor="#ffffff" [height]="'60vh'" [useBrowserLocale]="true"
+                                            [handTool]="false" [showHandToolButton]="true" 
+                                            [showZoomButtons]="true" [showSecondaryToolbarButton]="true"> </ngx-extended-pdf-viewer>
+                                           
+                                        </div>
+                                        </div>
+                                    </div>  
+                                    </div>                                                      
+                            </div>
+                        </tab>
+                        <tab heading="Prices" (selectTab)="onSelectTab($event)">
+                            <service-prices-listing></service-prices-listing>
+                        </tab>
+
+                    </tabset>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

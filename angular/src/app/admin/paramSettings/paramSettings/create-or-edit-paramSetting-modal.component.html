@@ -1,0 +1,40 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #paramSettingForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="paramSetting.id">{{l("EditParamSetting")}}</span>
+                        <span *ngIf="!paramSetting.id">{{l("CreateNewParamSetting")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+								<div class="form-group">
+									<label for="ParamSetting_Name">{{l("Name")}} *</label>
+									<input type="text" id="ParamSetting_Name" class="form-control" [(ngModel)]="paramSetting.name" name="Name"   minlength="1"  maxlength="30"  required/>
+								</div>
+					
+								<div class="form-group">
+									<label for="ParamSetting_Value">{{l("Value")}}</label>
+									<input type="text" id="ParamSetting_Value" class="form-control" [(ngModel)]="paramSetting.value" name="Value"   minlength="0"  maxlength="50" />
+								</div>
+					
+								<div class="form-group">
+									<label for="ParamSetting_Description">{{l("Description")}}</label>
+									<input type="text" id="ParamSetting_Description" class="form-control" [(ngModel)]="paramSetting.description" name="Description"   minlength="0"  maxlength="500" />
+								</div>
+					
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!paramSettingForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
